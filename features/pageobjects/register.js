@@ -1,5 +1,5 @@
-const {faker} = require('@faker-js/faker')
-const {Login} = require('./login.page')
+const { Login } = require('./login.page')
+const { Data } = require('../pageobjects/data')
 const Base = require('./base')
 
 class Register  extends Base {
@@ -58,18 +58,13 @@ class Register  extends Base {
     get option(){
         return $('//*[@id="AccountFrm_zone_id"]/option[5]')
     }
-    async register(){
-        const data = {
-            firstName: faker.name.firstName(),
-            lastName: faker.name.lastName(),
-            password: faker.internet.password(),
-            email: faker.internet.email(),
-            address: faker.address.streetAddress(),
-            city: faker.address.city(),
-            zip: faker.address.zipCode(),
-            loginName: faker.internet.userName(),
-            password: faker.internet.password()
-        };
+    async register(...arg){ 
+        let data 
+        if (arg[0]!==null){
+            data = arg[0]
+        }else if (arg[0] === null){
+            data = Data.registerData    
+        }         
         await this.firstName.setValue(data.firstName);
         await this.lastName.setValue(data.lastName);
         await this.addres1.setValue(data.address);
@@ -84,10 +79,10 @@ class Register  extends Base {
         await this.agreement.click()
         const creds = {name : data.loginName, password : data.password}
         console.log(creds)
+        console.log(data)
         this.creds = creds
         await this.continueButton.click()
-        
-
+        await browser.pause(3000)  
     }
 
     async loginOrRegister(type, ...arg){
@@ -97,13 +92,14 @@ class Register  extends Base {
         else if( type === 'register'){
             await this.logReg.click();
             await Login.registerButton.click()
-            await this.register()
+            await this.register(...arg)
         }
     }
     async registerCheck(){
         await browser.deleteCookies()
         await Login.openLogin()        
         await this.loginOrRegister('login', this.creds.name, this.creds.password)
+        await browser.pause(4000)
     }
 
 }

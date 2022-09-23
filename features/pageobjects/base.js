@@ -1,3 +1,4 @@
+const {Data} = require ('../pageobjects/data')
 module.exports = class Base {
         
     get logReg (){       
@@ -22,7 +23,8 @@ module.exports = class Base {
         return $('.maintext')
     }  
     async openPage () {
-        await browser.maximizeWindow()
-        await browser.url('https://automationteststore.com/')
+        await browser.maximizeWindow()       
+        await browser.url(Data.url)
+        
     }    
 }
