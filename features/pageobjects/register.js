@@ -82,7 +82,7 @@ class Register  extends Base {
         console.log(data)
         this.creds = creds
         await this.continueButton.click()
-        await browser.pause(3000)  
+        
     }
 
     async loginOrRegister(type, ...arg){
@@ -99,7 +99,7 @@ class Register  extends Base {
         await browser.deleteCookies()
         await Login.openLogin()        
         await this.loginOrRegister('login', this.creds.name, this.creds.password)
-        await browser.pause(4000)
+        
     }
 
 }
